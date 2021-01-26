@@ -38,6 +38,7 @@ class Dvla
     /**
      * @param string $registrationNumber
      * @return Vehicle
+     * @throws Exception|GuzzleException
      */
     public function getVehicleDetailsByRegistrationNumber(string $registrationNumber): Vehicle
     {
@@ -49,8 +50,7 @@ class Dvla
     /**
      * @param Vehicle $vehicle
      * @return Vehicle
-     * @throws GuzzleException
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function getVehicleDetails(Vehicle $vehicle): Vehicle
     {
