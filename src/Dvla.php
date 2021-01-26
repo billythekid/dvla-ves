@@ -15,8 +15,7 @@ class Dvla
 
     private string $apiKey;
     private ?string $correlationId;
-    private bool $testMode;
-    private Client $client;
+    private bool $testMode = true;
 
     /**
      * Dvla constructor.
@@ -25,14 +24,30 @@ class Dvla
      * @param string|null $correlationId
      * @param bool        $testmode
      */
-    public function __construct(string $apiKey, string $correlationId = null, bool $testmode = true)
+    public function __construct(string $apiKey, string $correlationId = null)
     {
         $this->apiKey        = $apiKey;
         $this->correlationId = $correlationId;
-        $this->testMode      = $testmode;
-        $this->client        = new Client([
-            'base_uri' => $this->testMode ? self::BASE_URL_TESTING : self::BASE_URL_LIVE,
-        ]);
+    }
+
+    /**
+     * @return Dvla
+     */
+    public function live(): Dvla
+    {
+        $this->testMode = false;
+
+        return $this;
+    }
+
+    /**
+     * @return Dvla
+     */
+    public function sandbox(): Dvla
+    {
+        $this->testMode = true;
+
+        return $this;
     }
 
     /**
@@ -54,7 +69,11 @@ class Dvla
      */
     public function getVehicleDetails(Vehicle $vehicle): Vehicle
     {
-        $response = $this->client->post('/v1/vehicles',
+        $client = new Client([
+            'base_uri' => $this->testMode ? self::BASE_URL_TESTING : self::BASE_URL_LIVE,
+        ]);
+
+        $response = $client->post('/v1/vehicles',
             [
                 "x-api-key"        => $this->apiKey,
                 "X-Correlation-Id" => $this->correlationId,
