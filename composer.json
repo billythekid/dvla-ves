@@ -1,0 +1,24 @@
+{
+    "name": "billythekid/dvla-ves",
+    "description": "A PHP wrapper for the DVLA's Vehicle Enquiry Service API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Billy Fagan",
+            "homepage": "https://billyfagan.co.uk"
+        }
+    ],
+    "support": {
+        "docs": "https://github.com/billythekid/dvla-ves/blob/master/README.md",
+        "issues": "https://github.com/billythekid/dvla-ves/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "billythekid\\dvla\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    }
+}
