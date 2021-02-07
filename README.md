@@ -11,6 +11,7 @@ use billythekid\dvla\Dvla;
 
 // create an API obect with your API key 
 $dvla = new Dvla("YOUR_API_KEY");
+// (or if you prefer static constructors, Dvla::create("YOUR_API_KEY");
 
 // https://developer-portal.driver-vehicle-licensing.api.gov.uk/apis/vehicle-enquiry-service/vehicle-enquiry-service-description.html#test-environment
 $dvla->sandbox(); // optional/default - use the sandbox endpoint for testing
