@@ -29,7 +29,7 @@ echo $vehicle->getFuelType(); // PETROL
 $dvla->live();
 $dvla->getVehicleDetailsByRegistrationNumber("A_REAL_REGISTRATION_NUMBER");
 
-// you can mock vehicles to use inyour application without hitting the API:
+// you can mock vehicles to use in your application without hitting the API:
 use billythekid\dvla\models\Vehicle;
 
 $mockVehicle = new Vehicle("A123BCD");
