@@ -6,6 +6,7 @@ use billythekid\dvla\models\Vehicle;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use JetBrains\PhpStorm\Pure;
 
 class Dvla
 {
@@ -30,7 +31,11 @@ class Dvla
         $this->correlationId = $correlationId;
     }
 
-    public static function create(...$args)
+    /**
+     * @param mixed ...$args
+     * @return static
+     */
+    public static function create(...$args): static
     {
         return new static(...$args);
     }
