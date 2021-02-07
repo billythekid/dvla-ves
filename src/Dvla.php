@@ -30,6 +30,11 @@ class Dvla
         $this->correlationId = $correlationId;
     }
 
+    public static function create(...$args)
+    {
+        return new static(...$args);
+    }
+
     /**
      * @return Dvla
      */
