@@ -6,13 +6,12 @@ use billythekid\dvla\models\Vehicle;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use JetBrains\PhpStorm\Pure;
 
 class Dvla
 {
 
-    private const BASE_URL_LIVE    = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry";
-    private const BASE_URL_TESTING = "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry";
+    private const BASE_URL_LIVE    = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/";
+    private const BASE_URL_TESTING = "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/";
 
     private string $apiKey;
     private ?string $correlationId;
@@ -23,7 +22,6 @@ class Dvla
      *
      * @param string      $apiKey required for all new Dvla objects.
      * @param string|null $correlationId
-     * @param bool        $testmode
      */
     public function __construct(string $apiKey, string $correlationId = null)
     {
@@ -83,40 +81,107 @@ class Dvla
             'base_uri' => $this->testMode ? self::BASE_URL_TESTING : self::BASE_URL_LIVE,
         ]);
 
-        $response = $client->post('/v1/vehicles',
-            [
-                "x-api-key"        => $this->apiKey,
-                "X-Correlation-Id" => $this->correlationId,
-                "json"             => [
-                    "registrationNumber" => $vehicle->getRegistrationNumber(),
-                ],
-            ]
-        );
+        $config = [
+            "headers" => [
+                "x-api-key"    => $this->apiKey,
+                "content-type" => "application/json",
+            ],
+            "json"    => [
+                "registrationNumber" => $vehicle->getRegistrationNumber(),
+            ],
+        ];
+
+        if ($this->correlationId)
+        {
+            $config["X-Correlation-Id"] = $this->correlationId;
+        }
+
+        $response = $client->request('POST', 'v1/vehicles', $config);
 
         if ($response->getStatusCode() === 200)
         {
             $vehicleResponse = json_decode($response->getBody());
 
-            $vehicle->setTaxStatus($vehicleResponse->taxStatus)
-                ->setTaxDueDate($vehicleResponse->taxDueDate)
-                ->setArtEndDate($vehicleResponse->artEndDate)
-                ->setMotStatus($vehicleResponse->motStatus)
-                ->setMotExpiryDate($vehicleResponse->motExpiryDate)
-                ->setMake($vehicleResponse->make)
-                ->setMonthOfFirstDvlaRegistration($vehicleResponse->monthOfFirstDvlaRegistration)
-                ->setMonthOfFirstRegistration($vehicleResponse->monthOfFirstRegistration)
-                ->setYearOfManufacture($vehicleResponse->yearOfManufacture)
-                ->setEngineCapacity($vehicleResponse->engineCapacity)
-                ->setCo2Emissions($vehicleResponse->co2Emissions)
-                ->setFuelType($vehicleResponse->fuelType)
-                ->setMarkedForExport($vehicleResponse->markedForExport)
-                ->setColour($vehicleResponse->colour)
-                ->setTypeApproval($vehicleResponse->typeApproval)
-                ->setWheelplan($vehicleResponse->wheelplan)
-                ->setRevenueWeight($vehicleResponse->revenueWeight)
-                ->setRealDrivingEmissions($vehicleResponse->realDrivingEmissions)
-                ->setDateOfLastV5CIssued($vehicleResponse->dateOfLastV5CIssued)
-                ->setEuroStatus($vehicleResponse->euroStatus);
+            if (isset($vehicleResponse->taxStatus))
+            {
+                $vehicle->setTaxStatus($vehicleResponse->taxStatus);
+            }
+            if (isset($vehicleResponse->taxDueDate))
+            {
+                $vehicle->setTaxDueDate($vehicleResponse->taxDueDate);
+            }
+            if (isset($vehicleResponse->artEndDate))
+            {
+                $vehicle->setArtEndDate($vehicleResponse->artEndDate);
+            }
+            if (isset($vehicleResponse->motStatus))
+            {
+                $vehicle->setMotStatus($vehicleResponse->motStatus);
+            }
+            if (isset($vehicleResponse->motExpiryDate))
+            {
+                $vehicle->setMotExpiryDate($vehicleResponse->motExpiryDate);
+            }
+            if (isset($vehicleResponse->make))
+            {
+                $vehicle->setMake($vehicleResponse->make);
+            }
+            if (isset($vehicleResponse->monthOfFirstDvlaRegistration))
+            {
+                $vehicle->setMonthOfFirstDvlaRegistration($vehicleResponse->monthOfFirstDvlaRegistration);
+            }
+            if (isset($vehicleResponse->monthOfFirstRegistration))
+            {
+                $vehicle->setMonthOfFirstRegistration($vehicleResponse->monthOfFirstRegistration);
+            }
+            if (isset($vehicleResponse->yearOfManufacture))
+            {
+                $vehicle->setYearOfManufacture($vehicleResponse->yearOfManufacture);
+            }
+            if (isset($vehicleResponse->engineCapacity))
+            {
+                $vehicle->setEngineCapacity($vehicleResponse->engineCapacity);
+            }
+            if (isset($vehicleResponse->co2Emissions))
+            {
+                $vehicle->setCo2Emissions($vehicleResponse->co2Emissions);
+            }
+            if (isset($vehicleResponse->fuelType))
+            {
+                $vehicle->setFuelType($vehicleResponse->fuelType);
+            }
+            if (isset($vehicleResponse->markedForExport))
+            {
+                $vehicle->setMarkedForExport($vehicleResponse->markedForExport);
+            }
+            if (isset($vehicleResponse->colour))
+            {
+                $vehicle->setColour($vehicleResponse->colour);
+            }
+            if (isset($vehicleResponse->typeApproval))
+            {
+                $vehicle->setTypeApproval($vehicleResponse->typeApproval);
+            }
+            if (isset($vehicleResponse->wheelplan))
+            {
+                $vehicle->setWheelplan($vehicleResponse->wheelplan);
+            }
+            if (isset($vehicleResponse->revenueWeight))
+            {
+                $vehicle->setRevenueWeight($vehicleResponse->revenueWeight);
+            }
+            if (isset($vehicleResponse->realDrivingEmissions))
+            {
+                $vehicle->setRealDrivingEmissions($vehicleResponse->realDrivingEmissions);
+            }
+            if (isset($vehicleResponse->dateOfLastV5CIssued))
+            {
+                $vehicle->setDateOfLastV5CIssued($vehicleResponse->dateOfLastV5CIssued);
+            }
+            if (isset($vehicleResponse->euroStatus))
+            {
+                $vehicle->setEuroStatus($vehicleResponse->euroStatus);
+            }
         } else
         {
             $errors = json_decode($response->getBody());
