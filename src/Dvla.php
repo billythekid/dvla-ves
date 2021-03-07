@@ -13,6 +13,8 @@ class Dvla
     private const BASE_URL_LIVE    = "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/";
     private const BASE_URL_TESTING = "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/";
 
+    public const VALID_PATTERN = "/(^[A-Z]{2}[0-9]{2}\s?[A-Z]{3}$)|(^[A-Z][0-9]{1,3}[A-Z]{3}$)|(^[A-Z]{3}[0-9]{1,3}[A-Z]$)|(^[0-9]{1,4}[A-Z]{1,2}$)|(^[0-9]{1,3}[A-Z]{1,3}$)|(^[A-Z]{1,2}[0-9]{1,4}$)|(^[A-Z]{1,3}[0-9]{1,3}$)|(^[A-Z]{1,3}[0-9]{1,4}$)|(^[0-9]{3}[DX]{1}[0-9]{3}$)/i";
+
     private string $apiKey;
     private ?string $correlationId;
     private bool $testMode = true;
@@ -36,6 +38,17 @@ class Dvla
     public static function create(...$args): static
     {
         return new static(...$args);
+    }
+
+    /**
+     * @param string $registrationNumber
+     * @return bool
+     */
+    public static function isValidRegistration(string $registrationNumber): bool
+    {
+        preg_match(static::VALID_PATTERN, $registrationNumber, $matches);
+
+        return (!empty($matches));
     }
 
     /**
@@ -77,6 +90,12 @@ class Dvla
      */
     public function getVehicleDetails(Vehicle $vehicle): Vehicle
     {
+        preg_match(self::VALID_PATTERN, $vehicle->getRegistrationNumber(), $matches);
+        if (empty($matches))
+        {
+            throw new Exception("Invalid vehicle registration number format");
+        }
+
         $client = new Client([
             'base_uri' => $this->testMode ? self::BASE_URL_TESTING : self::BASE_URL_LIVE,
         ]);

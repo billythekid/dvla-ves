@@ -24,27 +24,27 @@ class Vehicle
      * Vehicle properties
      */
     private string $registrationNumber; // Registration number of the vehicle
-    private string $taxStatus; // Tax status of the vehicle
-    private string $taxDueDate; // Date of tax liability, Used in calculating licence information presented to user
-    private string $artEndDate; // Additional Rate of Tax End Date, format: YYYY-MM-DD
-    private string $motStatus; // MOT Status of the vehicle
-    private string $motExpiryDate; // Mot Expiry Date
-    private string $make; // Vehicle make
-    private string $monthOfFirstDvlaRegistration; // Month of First DVLA Registration
-    private string $monthOfFirstRegistration; // Month of First Registration
-    private int $yearOfManufacture; // Year of Manufacture
-    private int $engineCapacity; // Engine capacity in cubic centimetres
-    private int $co2Emissions; // Carbon Dioxide emissions in grams per kilometre
-    private string $fuelType; // Fuel type (Method of Propulsion)
-    private bool $markedForExport; // True only if vehicle has been export marked
-    private string $colour; // Vehicle colour
-    private string $color; // Vehicle colour (alias of $colour)
-    private string $typeApproval; // Vehicle Type Approval Category
-    private string $wheelplan; // Vehicle wheel plan
-    private int $revenueWeight; // Revenue weight in kilograms
-    private string $realDrivingEmissions; // Real Driving Emissions value
-    private string $dateOfLastV5CIssued; // Date of last V5C issued
-    private string $euroStatus; // Euro Status (Dealer / Customer Provided (new vehicles))
+    private ?string $taxStatus = null; // Tax status of the vehicle
+    private ?string $taxDueDate = null; // Date of tax liability, Used in calculating licence information presented to user
+    private ?string $artEndDate = null; // Additional Rate of Tax End Date, format: YYYY-MM-DD
+    private ?string $motStatus = null; // MOT Status of the vehicle
+    private ?string $motExpiryDate = null; // Mot Expiry Date
+    private ?string $make = null; // Vehicle make
+    private ?string $monthOfFirstDvlaRegistration = null; // Month of First DVLA Registration
+    private ?string $monthOfFirstRegistration = null; // Month of First Registration
+    private ?int $yearOfManufacture = null; // Year of Manufacture
+    private ?int $engineCapacity = null; // Engine capacity in cubic centimetres
+    private ?int $co2Emissions = null; // Carbon Dioxide emissions in grams per kilometre
+    private ?string $fuelType = null; // Fuel type (Method of Propulsion)
+    private ?bool $markedForExport = null; // True only if vehicle has been export marked
+    private ?string $colour = null; // Vehicle colour
+    private ?string $color = null; // Vehicle colour (alias of $colour)
+    private ?string $typeApproval = null; // Vehicle Type Approval Category
+    private ?string $wheelplan = null; // Vehicle wheel plan
+    private ?int $revenueWeight = null; // Revenue weight in kilograms
+    private ?string $realDrivingEmissions = null; // Real Driving Emissions value
+    private ?string $dateOfLastV5CIssued = null; // Date of last V5C issued
+    private ?string $euroStatus = null; // Euro Status (Dealer / Customer Provided (new vehicles))
 
 
     public function __construct($registrationNumber)
@@ -55,14 +55,6 @@ class Vehicle
     /**
      * Fluent setters
      */
-
-    /**
-     * @return string
-     */
-    public function getTaxStatus(): string
-    {
-        return $this->taxStatus;
-    }
 
     /**
      * @param string $taxStatus
@@ -359,169 +351,177 @@ class Vehicle
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRegistrationNumber(): string
+    public function getRegistrationNumber(): ?string
     {
         return $this->registrationNumber;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTaxDueDate(): string
+    public function getTaxStatus(): ?string
+    {
+        return $this->taxStatus;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTaxDueDate(): ?string
     {
         return $this->taxDueDate;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getArtEndDate(): string
+    public function getArtEndDate(): ?string
     {
         return $this->artEndDate;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMotStatus(): string
+    public function getMotStatus(): ?string
     {
         return $this->motStatus;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMotExpiryDate(): string
+    public function getMotExpiryDate(): ?string
     {
         return $this->motExpiryDate;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMake(): string
+    public function getMake(): ?string
     {
         return $this->make;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMonthOfFirstDvlaRegistration(): string
+    public function getMonthOfFirstDvlaRegistration(): ?string
     {
         return $this->monthOfFirstDvlaRegistration;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMonthOfFirstRegistration(): string
+    public function getMonthOfFirstRegistration(): ?string
     {
         return $this->monthOfFirstRegistration;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getYearOfManufacture(): int
+    public function getYearOfManufacture(): ?int
     {
         return $this->yearOfManufacture;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getEngineCapacity(): int
+    public function getEngineCapacity(): ?int
     {
         return $this->engineCapacity;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getCo2Emissions(): int
+    public function getCo2Emissions(): ?int
     {
         return $this->co2Emissions;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFuelType(): string
+    public function getFuelType(): ?string
     {
         return $this->fuelType;
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isMarkedForExport(): bool
+    public function isMarkedForExport(): ?bool
     {
         return $this->markedForExport;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getColour(): string
+    public function getColour(): ?string
     {
         return $this->colour;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getColor(): string
+    public function getColor(): ?string
     {
         return $this->getColour();
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getTypeApproval(): string
+    public function getTypeApproval(): ?string
     {
         return $this->typeApproval;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWheelplan(): string
+    public function getWheelplan(): ?string
     {
         return $this->wheelplan;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getRevenueWeight(): int
+    public function getRevenueWeight(): ?int
     {
         return $this->revenueWeight;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getRealDrivingEmissions(): string
+    public function getRealDrivingEmissions(): ?string
     {
         return $this->realDrivingEmissions;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDateOfLastV5CIssued(): string
+    public function getDateOfLastV5CIssued(): ?string
     {
         return $this->dateOfLastV5CIssued;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEuroStatus(): string
+    public function getEuroStatus(): ?string
     {
         return $this->euroStatus;
     }
