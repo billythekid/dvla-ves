@@ -320,7 +320,7 @@ class Vehicle
      * @return bool|int|string
      * @throws Exception
      */
-    public function __get(string $property): bool|int|string
+    public function __get(string $property): null|bool|int|string
     {
         return match ($property)
         {
