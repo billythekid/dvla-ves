@@ -11,14 +11,14 @@ class Vehicle
      * ENUMS
      */
     public const TAX_STATUS_NOT_TAXED_FOR_ON_ROAD_USE = "Not Taxed for on Road Use";
-    public const TAX_STATUS_SORN                      = "SORN";
-    public const TAX_STATUS_TAXED                     = "Taxed";
-    public const TAX_STATUS_UNTAXED                   = "Untaxed";
+    public const TAX_STATUS_SORN = "SORN";
+    public const TAX_STATUS_TAXED = "Taxed";
+    public const TAX_STATUS_UNTAXED = "Untaxed";
 
     public const MOT_STATUS_NO_DETAILS_HELD_BY_DVLA = "No details held by DVLA";
-    public const MOT_STATUS_NO_RESULTS_RETURNED     = "No results returned";
-    public const MOT_STATUS_NOT_VALID               = "Not valid";
-    public const MOT_STATUS_VALID                   = "Valid";
+    public const MOT_STATUS_NO_RESULTS_RETURNED = "No results returned";
+    public const MOT_STATUS_NOT_VALID = "Not valid";
+    public const MOT_STATUS_VALID = "Valid";
 
     /**
      * Vehicle properties
@@ -45,7 +45,7 @@ class Vehicle
     private ?string $realDrivingEmissions = null; // Real Driving Emissions value
     private ?string $dateOfLastV5CIssued = null; // Date of last V5C issued
     private ?string $euroStatus = null; // Euro Status (Dealer / Customer Provided (new vehicles))
-
+    private ?bool $automatedVehicle = null; // True if vehicle is Automated Vehicle (AV)
 
     public function __construct($registrationNumber)
     {
@@ -68,8 +68,7 @@ class Vehicle
             self::TAX_STATUS_SORN,
             self::TAX_STATUS_TAXED,
             self::TAX_STATUS_UNTAXED,
-        ]))
-        {
+        ])) {
             throw new Exception("Invalid tax status: {$taxStatus}");
         }
 
@@ -111,8 +110,7 @@ class Vehicle
             self::MOT_STATUS_NO_RESULTS_RETURNED,
             self::MOT_STATUS_NOT_VALID,
             self::MOT_STATUS_VALID,
-        ]))
-        {
+        ])) {
             throw new Exception("Invalid MOT status: {$motStatus}");
         }
 
@@ -227,7 +225,7 @@ class Vehicle
     public function setColour(string $colour): Vehicle
     {
         $this->colour = $colour;
-        $this->color  = $colour;
+        $this->color = $colour;
 
         return $this;
     }
@@ -310,6 +308,17 @@ class Vehicle
     }
 
     /**
+     * @param bool $automatedVehicle
+     * @return Vehicle
+     */
+    public function setAutomatedVehicle(bool $automatedVehicle): Vehicle
+    {
+        $this->automatedVehicle = $automatedVehicle;
+
+        return $this;
+    }
+
+    /**
      * Accessors
      */
 
@@ -322,8 +331,7 @@ class Vehicle
      */
     public function __get(string $property): null|bool|int|string
     {
-        return match ($property)
-        {
+        return match ($property) {
             "registrationNumber" => $this->getRegistrationNumber(),
             "taxStatus" => $this->getTaxStatus(),
             "taxDueDate" => $this->getTaxDueDate(),
@@ -346,6 +354,7 @@ class Vehicle
             "realDrivingEmissions" => $this->getRealDrivingEmissions(),
             "dateOfLastV5CIssued" => $this->getDateOfLastV5CIssued(),
             "euroStatus" => $this->getEuroStatus(),
+            "automatedVehicle" => $this->isAutomatedVehicle(),
             default => throw new Exception("Property not found"),
         };
     }
@@ -524,6 +533,14 @@ class Vehicle
     public function getEuroStatus(): ?string
     {
         return $this->euroStatus;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isAutomatedVehicle(): ?bool
+    {
+        return $this->automatedVehicle;
     }
 
 
